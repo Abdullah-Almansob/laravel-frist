@@ -1,0 +1,27 @@
+{
+    "name": "your/project-name",
+    "type": "project",
+    "require": {
+        "php": "^7.3|^8.0",
+        "laravel/framework": "^9.0",
+        "laravel/sanctum": "^3.3",
+        "laravel/tinker": "^2.10"
+    },
+    "require-dev": {
+        "laravel/breeze": "^1.19",
+        "nunomaduro/collision": "^6.4",
+        "pestphp/pest": "^1.22",
+        "pestphp/pest-plugin-laravel": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ]
+    }
+}
