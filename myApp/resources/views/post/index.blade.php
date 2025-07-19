@@ -3,10 +3,7 @@
 @section('content')
     <div class="container mt-4">
 
-        <!-- زر إنشاء بوست جديد -->
-        <div class="d-flex justify-content-end mb-3">
-            <a href="{{ route('post.create') }}" class="btn btn-success">➕ إنشاء بوست جديد</a>
-        </div>
+
 
         <!-- عرض البوستات -->
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -15,8 +12,15 @@
                     <div class="card shadow rounded-3 h-100">
                         <!-- صورة بروفايل -->
                         <div class="card-header bg-light d-flex align-items-center gap-2">
-                            <img src="{{ $post->image_path ? asset('storage/' . $post->image_path) : asset('storage/images/default_image.png') }}"class="rounded-circle"
-                                width="40" height="40">
+                            @if ($post->user && $post->user->profile_image)
+                                <img src="{{ asset('storage/' . $post->user->profile_image) }}" alt="Profile Image"
+                                    width="50" class="rounded-circle">
+                            @else
+                                <img src="{{ asset('storage/profile_images/default-profile.png') }}" alt="Default Profile"
+                                    width="50" class="rounded-circle">
+                            @endif
+
+
                             <div>
                                 <strong>{{ $post->user->name ?? 'مستخدم مجهول' }}</strong><br>
                                 <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
@@ -28,17 +32,21 @@
                             <h5 class="card-title text-primary">{{ $post->title }}</h5>
                             <p class="card-text">{{ $post->description }}</p>
                         </div>
+                        @auth
+                            @if (auth()->id() === $post->user_id || auth()->user()->is_admin)
+                                <div class="card-footer bg-white border-top d-flex justify-content-between gap-2">
+                                    <a href="{{ route('post.edit', $post->id) }}"
+                                        class="btn btn-sm btn-warning rounded-pill px-3">
+                                        تعديل
+                                    </a>
+                                    <button type="button" class="btn btn-danger btnDelete btn-sm rounded-pill px-3"
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ $post->id }}">
+                                        حذف
+                                    </button>
+                                </div>
+                            @endif
+                        @endauth
 
-                        <!-- أزرار العمليات -->
-                        <div class="card-footer bg-white d-flex justify-content-between">
-                            <a href="{{ route('post.edit', $post->id) }}" class="btn btn-sm btn-warning">✏️ تعديل</a>
-
-                            <button type="button" class="btn btn-danger btnDelete" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-post-id="{{ $post->id }}">
-                                🗑️ حذف
-                            </button>
-
-                        </div>
                     </div>
                 </div>
             @endforeach

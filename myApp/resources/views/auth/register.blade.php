@@ -17,7 +17,9 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('register.submit') }}">
+
+
+                <form method="POST" action="{{ route('register.submit') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -37,10 +39,15 @@
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label for="password_confirmation" class="form-label">تأكيد كلمة المرور:</label>
                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
                             required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="profile_image" class="form-label">صورة الملف الشخصي:</label>
+                        <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
                     </div>
 
                     <button type="submit" class="btn btn-success w-100">تسجيل</button>
@@ -48,5 +55,4 @@
             </div>
         </div>
     </div>
-
 @endsection

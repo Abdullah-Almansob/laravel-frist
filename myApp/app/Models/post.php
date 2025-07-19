@@ -9,10 +9,11 @@ class post extends Model
 {
 
     use HasFactory;
-    protected $fillable = ['title', 'description','image_path','user_id']; 
+    protected $fillable = ['title', 'description', 'postCategory', 'user_id'];
 
-    public function user(){
-        return $this->belongsTo(related:User::class);
+    public function user()
+    {
+        return $this->belongsTo(related: User::class);
         //relationshp between post model and user model
     }
 }

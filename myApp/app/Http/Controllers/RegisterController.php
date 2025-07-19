@@ -17,21 +17,30 @@ class RegisterController extends Controller
     // تنفيذ التسجيل
     public function register(Request $request)
     {
-        // التحقق من صحة البيانات
-        $request->validate([
+        // تحقق من البيانات
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|confirmed|min:6',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // إنشاء المستخدم
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // إنشاء مستخدم جديد
+        $user = new User();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->password = bcrypt($validated['password']);
 
-        // توجيه المستخدم
+        // رفع الصورة إن وُجدت
+        if ($request->hasFile('profile_image')) {
+            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+            $user->profile_image = $imagePath;
+        }
+
+        $user->save();
+
+        // (اختياري) تسجيل الدخول للمستخدم مباشرة بعد التسجيل
+        // auth()->login($user);
         return redirect()->route('login')->with('success', 'تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن.');
     }
 }

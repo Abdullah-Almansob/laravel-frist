@@ -31,6 +31,10 @@ Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 Route::post('/post', [PostController::class, 'store'])->name('post.store');
 Route::delete('/post/{id}', [PostController::class, 'delete'])->name('post.delete');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
+    Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
+});
 
 
 Route::middleware('auth')->group(function () {
@@ -42,8 +46,8 @@ Route::middleware('auth')->group(function () {
 // إنشاء وتعديل وحذف البوستات (للمستخدمين فقط)
 Route::middleware(['auth', 'admin'])->group(function () {
 
-    Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
-    Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
+
+
     Route::resource('users', UserController::class)->except(['show', 'edit', 'update']);
     Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/admin/users', [UserController::class, 'store'])->name('users.store');

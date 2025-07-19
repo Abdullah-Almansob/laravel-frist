@@ -1,21 +1,17 @@
-@extends('layouts.Main')
-
+@extends('partials.nav_admin_user')
 @section('content')
     <div class="container mt-5">
-        <h2 class="text-center text-primary fw-bold mb-4">👥 إدارة المستخدمين</h2>
-
+        <h2 class="text-center text-primary fw-bold mb-4"> إدارة المستخدمين</h2>
         <div class="row g-4">
             @foreach ($users as $user)
                 <div class="col-md-4">
                     <div class="card shadow-sm border-0 rounded-4 p-3 position-relative h-100">
-
                         {{-- صورة بروفايل --}}
                         <div class="text-center mb-3">
-                            <img src="{{ $user->image_path ? asset('storage/' . $user->image_path) : asset('storage/images/default_image.png') }}"
+                            <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('storage/profile_images/default-profile.png') }}"
                                 alt="صورة المستخدم" class="rounded-circle shadow"
                                 style="width: 90px; height: 90px; object-fit: cover;">
                         </div>
-
                         {{-- معلومات المستخدم --}}
                         <div class="text-center">
                             <h5 class="fw-bold">{{ $user->name }}</h5>
